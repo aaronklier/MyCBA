@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="577d8882-4f37-4ba2-a753-f37beec90f4c" solutionId="577d8882-4f37-4ba2-a753-f37beec90f4c" resetWebServer="false" sharePointProductVersion="15.0" name="MyCloudBusinessApp.SharePoint" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="91f83440-d541-4a5f-8296-d1b8947858d4" />
+  </features>
+</package>
