@@ -40,5 +40,8 @@
     <ApplicationNavigationMethodLink
       Name="link"
       Method="!module/Methods[showBrowseRooms]" />
+    <ApplicationNavigationMethodLink
+      Name="link1"
+      Method="!module/Methods[showBrowseAllSurveys]" />
   </Application.NavigationItems>
 </Application>

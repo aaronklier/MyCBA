@@ -5,12 +5,10 @@
     <Partial />
   </Application.Attributes>
   <Screen
-    Name="BrowseRooms">
+    Name="BrowseAllSurveys">
     <Screen.Attributes>
       <SaveChangesTo
         EntityContainer="ApplicationData" />
-      <DisplayName
-        Value="Rooms" />
     </Screen.Attributes>
     <Screen.RootContentItem>
       <ContentItem
@@ -22,29 +20,29 @@
           Kind="Group"
           View="Microsoft.LightSwitch.MobileWeb:TabPages">
           <ContentItem
-            Name="RoomList"
+            Name="SurveyList"
             Kind="Group">
             <ContentItem
-              Name="Rooms"
+              Name="Surveys"
               Kind="Collection"
-              DataType="CollectionView$Room"
+              DataType="CollectionView$Survey"
               View="Microsoft.LightSwitch.MobileWeb:Table">
               <ContentItem.Attributes>
                 <DisplayName
-                  Value="Rooms" />
+                  Value="Surveys" />
               </ContentItem.Attributes>
               <ContentItem.DataSource>
                 <ScreenExpressionTree>
                   <ChainExpression>
                     <MemberExpression
-                      Member="BrowseRooms/Properties[Rooms]" />
+                      Member="BrowseAllSurveys/Properties[Surveys]" />
                   </ChainExpression>
                 </ScreenExpressionTree>
               </ContentItem.DataSource>
               <ContentItem
                 Name="rows"
                 Kind="Details"
-                DataType="Room"
+                DataType="Survey"
                 View="Microsoft.LightSwitch.MobileWeb:RowsLayout">
                 <ContentItem.Attributes>
                   <DisplayName
@@ -56,14 +54,39 @@
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
                 <ContentItem
-                  Name="RoomName"
+                  Name="ImageURL"
+                  Kind="Value"
+                  DataType=":String?">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression
+                          Member="Survey/Properties[ImageURL]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                  <ContentItem.PropertySources>
+                    <ControlPropertySource
+                      Property="Microsoft.LightSwitch.MobileWeb:RootControl/Properties[FontStyle]">
+                      <ScreenExpressionTree>
+                        <ChainExpression>
+                          <ConstantExpression
+                            Value="Small"
+                            ResultType=":String" />
+                        </ChainExpression>
+                      </ScreenExpressionTree>
+                    </ControlPropertySource>
+                  </ContentItem.PropertySources>
+                </ContentItem>
+                <ContentItem
+                  Name="SurveyName"
                   Kind="Value"
                   DataType=":String">
                   <ContentItem.DataSource>
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <MemberExpression
-                          Member="Room/Properties[RoomName]" />
+                          Member="Survey/Properties[SurveyName]" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
@@ -81,14 +104,63 @@
                   </ContentItem.PropertySources>
                 </ContentItem>
                 <ContentItem
-                  Name="CreatedBy"
+                  Name="Description"
                   Kind="Value"
-                  DataType=":Person?">
+                  DataType=":String?">
                   <ContentItem.DataSource>
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <MemberExpression
-                          Member="Room/Properties[CreatedBy]" />
+                          Member="Survey/Properties[Description]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                </ContentItem>
+                <ContentItem
+                  Name="GeoLocationName"
+                  Kind="Value"
+                  DataType=":String?">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression
+                          Member="Survey/Properties[GeoLocationName]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                </ContentItem>
+                <ContentItem
+                  Name="Room"
+                  Kind="Details"
+                  DataType="Room">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression
+                          Member="Survey/Properties[Room]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                  <ContentItem
+                    Name="Room1"
+                    Kind="Details"
+                    DataType="Room">
+                    <ContentItem.DataSource>
+                      <ScreenExpressionTree>
+                        <ChainExpression />
+                      </ScreenExpressionTree>
+                    </ContentItem.DataSource>
+                  </ContentItem>
+                </ContentItem>
+                <ContentItem
+                  Name="Person"
+                  Kind="Value"
+                  DataType=":Person">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression
+                          Member="Survey/Properties[Person]" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
@@ -106,29 +178,17 @@
                   </ContentItem.PropertySources>
                 </ContentItem>
                 <ContentItem
-                  Name="Created"
+                  Name="Modified"
                   Kind="Value"
                   DataType=":DateTimeOffset?">
                   <ContentItem.DataSource>
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <MemberExpression
-                          Member="Room/Properties[Created]" />
+                          Member="Survey/Properties[Modified]" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
-                  <ContentItem.PropertySources>
-                    <ControlPropertySource
-                      Property="Microsoft.LightSwitch.MobileWeb:RootControl/Properties[FontStyle]">
-                      <ScreenExpressionTree>
-                        <ChainExpression>
-                          <ConstantExpression
-                            Value="Small"
-                            ResultType=":String" />
-                        </ChainExpression>
-                      </ScreenExpressionTree>
-                    </ControlPropertySource>
-                  </ContentItem.PropertySources>
                 </ContentItem>
                 <ContentItem.PropertySources>
                   <ControlPropertySource
@@ -149,16 +209,12 @@
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <CallExpression
-                        Target="!module/Methods[showViewRoom]">
-                        <CallExpression.Attributes>
-                          <AssociatedCollection
-                            Collection="BrowseRooms/Properties[Rooms]" />
-                        </CallExpression.Attributes>
+                        Target="!module/Methods[showViewSurveyDetails]">
                         <ArgumentExpression
-                          Parameter="Room">
+                          Parameter="Survey">
                           <ChainExpression>
                             <MemberExpression
-                              Member="BrowseRooms/Properties[Rooms]" />
+                              Member="BrowseAllSurveys/Properties[Surveys]" />
                             <MemberExpression
                               Member="selectedItem" />
                           </ChainExpression>
@@ -171,43 +227,7 @@
             </ContentItem>
             <ContentItem.CommandItems>
               <ContentItem
-                Name="AddRoom"
-                Kind="Command">
-                <ContentItem.Attributes>
-                  <DisplayName
-                    Value="Add" />
-                </ContentItem.Attributes>
-                <ContentItem.PropertySources>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.MobileWeb:RootControl/Properties[Tap]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <CallExpression
-                          Target="!module/Methods[showAddEditRoom]">
-                          <CallExpression.Attributes>
-                            <AssociatedCollection
-                              Collection="BrowseRooms/Properties[Rooms]" />
-                            <CreateNewEntity
-                              TargetParameter="!module/Methods[showAddEditRoom]/Parameters[Room]" />
-                          </CallExpression.Attributes>
-                        </CallExpression>
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                  <ControlPropertySource
-                    Property="Microsoft.LightSwitch.MobileWeb:RootCommand/Properties[Icon]">
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <ConstantExpression
-                          Value="msls-add"
-                          ResultType="Microsoft.LightSwitch:String" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ControlPropertySource>
-                </ContentItem.PropertySources>
-              </ContentItem>
-              <ContentItem
-                Name="SearchRooms"
+                Name="SearchSurveys"
                 Kind="Command">
                 <ContentItem.Attributes>
                   <DisplayName
@@ -219,7 +239,7 @@
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <MemberExpression
-                          Member="BrowseRooms/Properties[Rooms]" />
+                          Member="BrowseAllSurveys/Properties[Surveys]" />
                         <CallExpression
                           Target="showSearch" />
                       </ChainExpression>
@@ -284,20 +304,20 @@
     </Screen.Methods>
     <Screen.Properties>
       <ScreenCollectionProperty
-        Name="Rooms"
+        Name="Surveys"
         PageSize="45"
-        PropertyType="CollectionView$Room">
+        PropertyType="CollectionView$Survey">
         <ScreenCollectionProperty.Query>
           <ScreenQueryDefinition
-            Name="RoomsQuery"
-            ReturnType="Room*">
+            Name="SurveysQuery"
+            ReturnType="Survey*">
             <ScreenQueryDefinition.FilterExpression>
               <QueryFilterExpressionTree />
             </ScreenQueryDefinition.FilterExpression>
             <ScreenQueryDefinition.Source>
               <QuerySourceExpressionTree>
                 <MemberExpression
-                  Member="ApplicationData/Members[Rooms]" />
+                  Member="ApplicationData/Members[Surveys]" />
               </QuerySourceExpressionTree>
             </ScreenQueryDefinition.Source>
           </ScreenQueryDefinition>
@@ -305,7 +325,7 @@
         <ScreenExpressionTree>
           <ChainExpression>
             <CallExpression
-              Target="BrowseRooms/Properties[Rooms]/Query" />
+              Target="BrowseAllSurveys/Properties[Surveys]/Query" />
           </ChainExpression>
         </ScreenExpressionTree>
       </ScreenCollectionProperty>
@@ -313,10 +333,10 @@
   </Screen>
   <Application.Methods>
     <ApplicationMethod
-      Name="showBrowseRooms">
+      Name="showBrowseAllSurveys">
       <ApplicationMethod.Attributes>
         <ShowScreenMethod
-          TargetScreen="BrowseRooms" />
+          TargetScreen="BrowseAllSurveys" />
       </ApplicationMethod.Attributes>
     </ApplicationMethod>
   </Application.Methods>

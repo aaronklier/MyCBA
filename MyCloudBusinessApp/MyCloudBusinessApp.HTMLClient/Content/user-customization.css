@@ -38,7 +38,79 @@ screen and (max-width: 640px) and (max-height: 400px) and (orientation: landscap
 }
 
 
+/* ################################# */
+/* ### VOTING SCREEN ### */
+.votingIcon{
+    float:right;
+    margin-top: -22px;    
+}
+li:hover .votingIcon{
+    opacity: 1;
+}
 
+#votingTable td{
+    border: 1px solid white;
+    text-align: center;
+}
+
+#votingTable tr:hover td:first-child{
+    background: black;
+    color:white;
+}
+
+.answerIcon{
+    padding: 3px;
+    width: 20px;
+    vertical-align: middle;
+    opacity: 0.6;
+}
+#votingTable tr:hover img{
+     opacity: 1;
+}
+
+.SurveyComment{
+    border:none;
+    border-bottom: 1px solid #E8E8E8 !important;
+    margin: 0 !important;
+    padding-top: 2px !important;
+}
+
+
+/* ################################# */
+/* ### Navigation Buttons, ModalDialog / WeekCalendar ### */
+#event_edit_container{
+    background: lightgray;
+}
+
+button.wc-today span:first-child{
+  display:none;
+}
+button.wc-today span{
+ padding: 5px 20px 5px 20px !important;
+}
+button.wc-today{
+
+}
+#calendar button.wc-prev{
+ margin-right: 0px;
+}
+ #calendar button.wc-next{
+ margin-left: 4px !important;
+ }
+ #calendar button.wc-next, #calendar button.wc-prev{
+    padding: 5px 25px;
+ }
+  #calendar button.wc-next, #calendar button.wc-prev, #calendar button.wc-today{
+ font-size: 15px !important;
+ background: #0072c5 !important; /* blue: #0072c5 */
+ color: white !important;
+ border: 1px solid #01528C;
+ border-bottom: 3px solid #01528C !important;
+ }
+
+#calendar button.wc-next:hover, #calendar button.wc-prev:hover, #calendar button.wc-today:hover{
+ background: #30A1F2 !important; /* blue: #0072c5 */
+ }
 
 /* ################################# */
 /* ### DEMO.CSS von WeekCalendar ### */

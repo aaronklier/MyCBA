@@ -36,6 +36,8 @@
   <ItemGroup>
     <Content Include="Content\dark-theme-2.5.2.css" />
     <Content Include="Content\Images\ajax-loader.gif" />
+    <Content Include="Content\Images\check.png" />
+    <Content Include="Content\Images\cross.png" />
     <Content Include="Content\Images\icons-18-black.png" />
     <Content Include="Content\Images\icons-18-white.png" />
     <Content Include="Content\Images\icons-36-black.png" />
@@ -47,6 +49,7 @@
     <Content Include="Content\Images\msls-white-icons-18.png" />
     <Content Include="Content\Images\msls-white-icons-36.png" />
     <Content Include="Content\Images\msls-blue-icons-36.png" />
+    <Content Include="Content\Images\question.png" />
     <Content Include="Content\jquery-ui-1.8.11.custom.css" />
     <Content Include="Content\jquery.mobile-1.3.0.css" />
     <Content Include="Content\jquery.mobile-1.3.0.min.css" />
@@ -68,6 +71,9 @@
     <Content Include="Content\Images\user-splash-screen.png" />
     <Content Include="Content\Web.config" />
     <Content Include="packages.config" />
+    <Content Include="Screens\AddEditQuestion.lsml.js">
+      <DependentUpon>AddEditQuestion.lsml</DependentUpon>
+    </Content>
     <Content Include="Screens\Rooms\ViewRoom.lsml.js">
       <DependentUpon>ViewRoom.lsml</DependentUpon>
     </Content>
@@ -76,6 +82,9 @@
     </Content>
     <Content Include="Screens\Surveys\ViewSurvey.lsml.js">
       <DependentUpon>ViewSurvey.lsml</DependentUpon>
+    </Content>
+    <Content Include="Screens\ViewSurveyDetails.lsml.js">
+      <DependentUpon>ViewSurveyDetails.lsml</DependentUpon>
     </Content>
     <Content Include="Scripts\datajs-1.1.1.js" />
     <Content Include="Scripts\datajs-1.1.1.min.js" />
@@ -109,6 +118,7 @@
     </LightSwitchModel>
     <LightSwitchModel Include="Properties\Proxies.lsml" />
     <LightSwitchModel Include="Screens\AddEditQuestion.lsml" />
+    <LightSwitchModel Include="Screens\BrowseAllSurveys.lsml" />
     <LightSwitchModel Include="Screens\Rooms\AddEditRoom.lsml" />
     <LightSwitchModel Include="Screens\Rooms\BrowseRooms.lsml" />
     <LightSwitchModel Include="Screens\Rooms\ViewRoom.lsml" />
@@ -116,6 +126,7 @@
     <LightSwitchModel Include="Screens\Surveys\AddEditSurvey.lsml" />
     <LightSwitchModel Include="Screens\Surveys\BrowseSurveys.lsml" />
     <LightSwitchModel Include="Screens\Surveys\ViewSurvey.lsml" />
+    <LightSwitchModel Include="Screens\ViewSurveyDetails.lsml" />
   </ItemGroup>
   <ItemGroup>
     <_ClientBuildFile Include="GeneratedArtifacts\model.json">
