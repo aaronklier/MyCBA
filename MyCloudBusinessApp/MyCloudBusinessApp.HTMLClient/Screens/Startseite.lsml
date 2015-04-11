@@ -20,7 +20,12 @@
             Kind="Group">
             <ContentItem
               Name="ScreenContent"
-              Kind="ScreenContent" />
+              Kind="ScreenContent">
+              <ContentItem.Attributes>
+                <DisplayName
+                  Value="Home" />
+              </ContentItem.Attributes>
+            </ContentItem>
           </ContentItem>
           <ContentItem.PropertySources>
             <ControlPropertySource

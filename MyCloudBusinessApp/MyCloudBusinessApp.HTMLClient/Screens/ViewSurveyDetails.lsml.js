@@ -9,7 +9,6 @@ myapp.ViewSurveyDetails.created = function (screen) {
     var details = screen.findContentItem("Details")
     details.handleViewDispose(function () {
         array = [];
-        newAnswer = false;
     });
 };
 
@@ -46,18 +45,24 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
                 response.setQuestion(contentItem.data.Id);
                 var object = new Object();
                 object.answer = response;
+
                 var listItem = $(element).parent("li");
+                $(listItem).addClass("surveyText");
                 object.domElement = listItem;
                 array.push(object);
-                SetBackgroundcolor(object.answer, object.domElement)
+                SetBackgroundcolor(object.answer, object.domElement);
+                SetConflictingEvents(contentItem, object.domElement);
             }
             else {  //already a response saved. set the right backgroundcolor and icon.
                 var object = new Object();
                 object.answer = item;
+
                 var listItem = $(element).parent("li");
+                $(listItem).addClass("surveyText");
                 object.domElement = listItem;
                 array.push(object);
-                SetBackgroundcolor(object.answer, object.domElement)
+                SetBackgroundcolor(object.answer, object.domElement);
+                SetConflictingEvents(contentItem, object.domElement);
             }
         });
     },
@@ -66,20 +71,33 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
         });
 };
 
+function SetConflictingEvents(contentItem, domElement) {
+
+    $.getJSON('/api/Calendar/Get/' + contentItem.data.Id, function (data) {
+        var x = data;
+        //alert(data[0].subject + " starts at: " + data[0].start);
+        if (data[0] != null) {
+            var alertHtml = GetAlertHtml(data[0]);
+            $(domElement).append("<img class='alertIcon' src='Content/images/alert.png'>");
+            $(domElement).attr("tooltip", "Konflikt mit Termin Subject: " + data[0].subject + " Start: " + data[0].start + " End: " + data[0].end + " Organizer: " + data[0].organizer + " Location: " + data[0].location);
+        }
+    });
+
+}
+
 function GetIconHtml(answer) {
     switch (answer.Response) {
-        case 1: return "<img class='answerIcon' src='Content/images/check.png'>";
-        case 2: return "<img class='answerIcon' src='Content/images/question.png'>";
-        case 3: return "<img class='answerIcon' src='Content/images/cross.png'>";
+        case 1: return "<img class='answerIcon votingIcon' src='Content/images/check.png'>";
+        case 2: return "<img class='answerIcon votingIcon' src='Content/images/question.png'>";
+        case 3: return "<img class='answerIcon votingIcon' src='Content/images/cross.png'>";
         default: return answer.Response;
     }
 }
 function DoIt(answer, domElement, color) {
     $(domElement).css("background", color);
     $(domElement).find(".votingIcon").remove();
-    var iconToAdd = $(GetIconHtml(answer));
+    var iconToAdd = GetIconHtml(answer); //$(GetIconHtml(answer));
     $(domElement).append(iconToAdd);
-    iconToAdd.addClass("votingIcon");
 }
 function SetBackgroundcolor(answer, domElement) {
     switch (answer.Response) {

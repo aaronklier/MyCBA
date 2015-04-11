@@ -40,12 +40,27 @@ screen and (max-width: 640px) and (max-height: 400px) and (orientation: landscap
 
 /* ################################# */
 /* ### VOTING SCREEN ### */
+.alertIcon{
+    float:left;
+    margin-top: -22px; 
+    margin-left: -5px;
+    width: 24px;   
+}
 .votingIcon{
     float:right;
     margin-top: -22px;    
 }
 li:hover .votingIcon{
     opacity: 1;
+}
+.answerIcon{
+    padding: 3px;
+    width: 22px !important;
+    vertical-align: middle;
+    opacity: 0.6;
+}
+.surveyText{
+    font-weight: bold !important;
 }
 
 #votingTable td{
@@ -58,12 +73,6 @@ li:hover .votingIcon{
     color:white;
 }
 
-.answerIcon{
-    padding: 3px;
-    width: 20px;
-    vertical-align: middle;
-    opacity: 0.6;
-}
 #votingTable tr:hover img{
      opacity: 1;
 }
@@ -191,4 +200,19 @@ ul.formatted li {
 
 ol.formatted li {
 	list-style-type: decimal;
+}
+
+/* TITLE*/
+li[tooltip^="Konflikt"]:hover:after{
+content: attr(tooltip);
+padding: 8px 12px;
+position: absolute;    
+color: #F7F7F7;
+border: 1px solid #57000E;    
+/*white-space: nowrap;*/
+z-index: 20;
+border-radius: 3px;
+box-shadow: 0px 0px 2px #c0c1c2;
+text-shadow: 0px 1px 1px rgba(0,0,0,0.7);
+background: linear-gradient(#c01e38 0%,#b01c34 100%);
 }
