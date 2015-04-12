@@ -79,7 +79,6 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
 function SetConflictingEvents(contentItem, domElement) {
 
     $.getJSON('/api/Calendar/GetConflicts/' + contentItem.data.Id, function (data) {
-        var x = data;
         //alert(data[0].subject + " starts at: " + data[0].start);
         if (data[0] != null) {
             var alertHtml = GetAlertHtml(data[0]);

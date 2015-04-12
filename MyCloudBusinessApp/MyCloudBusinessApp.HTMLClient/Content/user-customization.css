@@ -37,6 +37,11 @@ screen and (max-width: 400px) and (orientation: portrait),
 screen and (max-width: 640px) and (max-height: 400px) and (orientation: landscape) {
 }
 
+.myOwnOpacity{
+    /*opacity: 0.8;*/
+}
+
+
 /* ################################# */
 /* ### VOTING SCREEN ### */
 .alertIcon{
@@ -110,14 +115,14 @@ button.wc-today{
  }
   #calendar button.wc-next, #calendar button.wc-prev, #calendar button.wc-today{
  font-size: 15px !important;
- background: #0072c5 !important; /* blue: #0072c5 */
+ background: #0072c5 !important; 
  color: white !important;
  border: 1px solid #01528C;
  border-bottom: 3px solid #01528C !important;
  }
 
 #calendar button.wc-next:hover, #calendar button.wc-prev:hover, #calendar button.wc-today:hover{
- background: #30A1F2 !important; /* blue: #0072c5 */
+ background: #30A1F2 !important;
  }
 
 /* ################################# */

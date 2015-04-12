@@ -84,13 +84,15 @@ myapp.ViewSurvey.ScreenContent_render = function (element, contentItem) {
                         id++;
                         calEvent.start = new Date(startField.val());
                         calEvent.end = new Date(endField.val());
-
+                        
                         eventArray.push(calEvent);
                         SaveEventToDatabase(calEvent, contentItem.screen);
 
                         $calendar.weekCalendar("removeUnsavedEvents");
                         $calendar.weekCalendar("updateEvent", calEvent);
                         $dialogContent.dialog("close");
+                        $(".wc-title:contains('New Event')").parent(".wc-cal-event").children("div.wc-time").addClass("NewCalEventHeader");
+                        $(".wc-title:contains('New Event')").parent(".wc-cal-event").addClass("NewCalEventBody");
                     },
                     cancel: function () {
                         $dialogContent.dialog("close");
@@ -105,25 +107,6 @@ myapp.ViewSurvey.ScreenContent_render = function (element, contentItem) {
         data: function (start, end, callback) {
             callback(getEventData());
         }
-        //,
-        //eventDrop: function (calEvent, $event) {
-        //    displayMessage('<strong>Moved Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
-        //},
-        //eventResize: function (calEvent, $event) {
-        //    displayMessage('<strong>Resized Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
-        //},
-        //eventClick: function (calEvent, $event) {
-        //    displayMessage('<strong>Clicked Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
-        //},
-        //eventMouseover: function (calEvent, $event) {
-        //    displayMessage('<strong>Mouseover Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
-        //},
-        //eventMouseout: function (calEvent, $event) {
-        //    displayMessage('<strong>Mouseout Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
-        //},
-        //noEvents: function () {
-        //    displayMessage('There are no events for this week');
-        //}
     });
 
     $("#calendar *").attr({ 'data-enhance': 'false', 'data-role': 'none' }); //damit jquery mobile nicht den html code upfucked
@@ -131,7 +114,30 @@ myapp.ViewSurvey.ScreenContent_render = function (element, contentItem) {
 
     $(".wc-prev").text('<');
     $(".wc-next").text(">");
+
+    GetUserEventsAndFillCalendar();
 };
+
+
+function GetUserEventsAndFillCalendar() {
+
+    $.getJSON('/api/Calendar/GetUserEvents', function (data) {
+        $.each(data, function (key, event) {
+            var calEvent = new Object();
+            calEvent.id = event.itemId;
+            calEvent.title = event.subject;
+            calEvent.start = event.start;
+            calEvent.end = event.end;
+
+            eventArray.push(calEvent);
+
+            $('#calendar').weekCalendar("removeUnsavedEvents");
+            $('#calendar').weekCalendar("updateEvent", calEvent);
+        });
+        alert("Successfully imported Exchange Online Calendar items.");
+    });
+
+}
 
 function SaveEventToDatabase(calEvent, screen) {
     var question = new myapp.Question;

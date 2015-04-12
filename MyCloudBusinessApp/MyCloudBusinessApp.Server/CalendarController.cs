@@ -13,12 +13,53 @@ namespace LightSwitchApplication
 {
     public class CalendarController : ApiController
     {
+
+        private Microsoft.LightSwitch.Framework.Server.O365PersonInfo currentSPuser;
+        private string WebCredentialsUsername = "Aaron@akldev.onmicrosoft.com";
+        private string WebCredentialsPassword = "Wienerfeld27";
+
+        public List<Object> GetUserEvents()
+        {
+            using (ServerApplicationContext context = ServerApplicationContext.CreateContext())
+            {
+                currentSPuser = context.Application.User;
+            }
+            ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
+            service.Credentials = new WebCredentials(WebCredentialsUsername, WebCredentialsPassword);
+            service.AutodiscoverUrl(currentSPuser.PersonId, RedirectionUrlValidationCallback);
+
+            var start = DateTime.Now;
+            var end = DateTime.Now.AddMonths(5);
+            var calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
+
+            // Set the start and end time and number of appointments to retrieve.
+            var view = new CalendarView(start, end);
+
+            // Limit the properties returned to the appointment's subject, start time, and end time.
+            view.PropertySet = new PropertySet(AppointmentSchema.Subject, AppointmentSchema.Start, AppointmentSchema.End);
+
+            var appointments = calendar.FindAppointments(view);
+            var list = new List<Object>();
+            foreach (var appointment in appointments)
+            {
+                list.Add(new
+                {
+                    itemId = appointment.Id,
+                    subject = appointment.Subject,
+                    start = appointment.Start,
+                    end = appointment.End,
+                });
+            }
+
+            return list;
+        }
+        
         // GET api/<controller>/5
         public string GetClosePollAndSendMail(int id)
         {
             Question question;
             Survey survey;
-            Microsoft.LightSwitch.Framework.Server.O365PersonInfo currentSPuser;
+            //Microsoft.LightSwitch.Framework.Server.O365PersonInfo currentSPuser;
             var surveyParticipants = new List<String>();
             using (ServerApplicationContext context = ServerApplicationContext.CreateContext())
             {
@@ -36,12 +77,12 @@ namespace LightSwitchApplication
             }
 
             if(!survey.isMeetingSurvey) return "Sucessfully closed poll and informed participants per Email!";
-            
-            //CREATE iCALENDAR EMAIL
+
+            //create iCalendar file and send email
                 try
                 {
                     ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
-                    service.Credentials = new WebCredentials("Aaron@akldev.onmicrosoft.com", "Wienerfeld27");
+                    service.Credentials = new WebCredentials(WebCredentialsUsername, WebCredentialsPassword);
                     service.AutodiscoverUrl(currentSPuser.PersonId, RedirectionUrlValidationCallback);
 
                     //### EMAIL senden ###
@@ -104,7 +145,7 @@ namespace LightSwitchApplication
         public List<Object> GetConflicts(int id)
         {
 
-            Microsoft.LightSwitch.Framework.Server.O365PersonInfo currentSPuser;
+            //Microsoft.LightSwitch.Framework.Server.O365PersonInfo currentSPuser;
             Question question;
             using (ServerApplicationContext ctx = ServerApplicationContext.CreateContext())
             {
@@ -116,7 +157,7 @@ namespace LightSwitchApplication
             }
 
             ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
-            service.Credentials = new WebCredentials("Aaron@akldev.onmicrosoft.com", "Wienerfeld27");
+            service.Credentials = new WebCredentials(WebCredentialsUsername, WebCredentialsPassword);
             service.AutodiscoverUrl(currentSPuser.PersonId, RedirectionUrlValidationCallback);
 
             var start = question.StartDate;  //new DateTime(2015, 4, 9, 16, 50, 00);
