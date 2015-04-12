@@ -10,14 +10,14 @@ namespace LightSwitchApplication
     public class SurveyInfoController : ApiController
     {
         // GET api/<controller>/5
-        public List<List<string>> Get(int id)
+        public List<List<string>> GetSurveyResults(int id)
         {
             if (id == 0 || id < 1) return null;
 
             using (var context = ServerApplicationContext.CreateContext())
             {
                 var allAnswersForSurvey = context.DataWorkspace.ApplicationData.Answers.GetQuery().Execute().Where(s => s.Question.Survey.Id == id).ToList();
-                var distinctPersons = (from p in allAnswersForSurvey select p.Person).Distinct().ToList();
+                var distinctPersons = (from p in allAnswersForSurvey select p.CreatedBy).Distinct().ToList();
                 var votingList = new List<List<string>>();
 
                 //header
@@ -34,7 +34,7 @@ namespace LightSwitchApplication
                     //new TR (HTML)
                     list.Add(rowCounter.ToString());
                     list.Add(person);
-                    var answers = allAnswersForSurvey.Where(a => a.Person == person).OrderBy(a => a.Id).Select(a => a.Response).ToList();
+                    var answers = allAnswersForSurvey.Where(a => a.CreatedBy == person).OrderBy(a => a.Id).Select(a => a.Response).ToList();
                     foreach (var answer in answers)
                     {
                         list.Add(GetAnswer(answer));
@@ -60,17 +60,17 @@ namespace LightSwitchApplication
         }
 
         //GET api/<controller/<action>/id
-        public List<int> GetAnswersByUser(int id)
-        {
-            if (id < 1) return null;
+        //public List<int> GetAnswersByUser(int id)
+        //{
+        //    if (id < 1) return null;
 
-            using (var context = ServerApplicationContext.CreateContext())
-            {
-                var user = "akl"; //bei Sharepoint dann den Sharepoint-User mitgeben als Parameter?!
-                var answers = context.DataWorkspace.ApplicationData.Answers.GetQuery().Execute().Where(a => a.Question.Survey.Id == id && a.Person == user).ToList();
-                var answerIds = (from a in answers select a.Id).ToList();
-                return answerIds;
-            }
-        }
+        //    using (var context = ServerApplicationContext.CreateContext())
+        //    {
+        //        var user = "akl"; //bei Sharepoint dann den Sharepoint-User mitgeben als Parameter?!
+        //        var answers = context.DataWorkspace.ApplicationData.Answers.GetQuery().Execute().Where(a => a.Question.Survey.Id == id && a.Person == user).ToList();
+        //        var answerIds = (from a in answers select a.Id).ToList();
+        //        return answerIds;
+        //    }
+        //}
     }
 }

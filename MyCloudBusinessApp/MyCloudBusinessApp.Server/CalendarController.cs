@@ -24,34 +24,42 @@ namespace LightSwitchApplication
             {
                 currentSPuser = context.Application.User;
             }
-            ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
-            service.Credentials = new WebCredentials(WebCredentialsUsername, WebCredentialsPassword);
-            service.AutodiscoverUrl(currentSPuser.PersonId, RedirectionUrlValidationCallback);
-
-            var start = DateTime.Now;
-            var end = DateTime.Now.AddMonths(5);
-            var calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
-
-            // Set the start and end time and number of appointments to retrieve.
-            var view = new CalendarView(start, end);
-
-            // Limit the properties returned to the appointment's subject, start time, and end time.
-            view.PropertySet = new PropertySet(AppointmentSchema.Subject, AppointmentSchema.Start, AppointmentSchema.End);
-
-            var appointments = calendar.FindAppointments(view);
-            var list = new List<Object>();
-            foreach (var appointment in appointments)
+            try
             {
-                list.Add(new
-                {
-                    itemId = appointment.Id,
-                    subject = appointment.Subject,
-                    start = appointment.Start,
-                    end = appointment.End,
-                });
-            }
+                ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
+                service.Credentials = new WebCredentials(WebCredentialsUsername, WebCredentialsPassword);
+                service.AutodiscoverUrl(currentSPuser.PersonId, RedirectionUrlValidationCallback);
 
-            return list;
+                var start = DateTime.Now;
+                var end = DateTime.Now.AddMonths(5);
+                var calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
+
+                // Set the start and end time and number of appointments to retrieve.
+                var view = new CalendarView(start, end);
+
+                // Limit the properties returned to the appointment's subject, start time, and end time.
+                view.PropertySet = new PropertySet(AppointmentSchema.Subject, AppointmentSchema.Start, AppointmentSchema.End);
+                var appointments = calendar.FindAppointments(view);
+
+                var list = new List<Object>();
+                foreach (var appointment in appointments)
+                {
+                    list.Add(new
+                    {
+                        itemId = appointment.Id,
+                        subject = appointment.Subject,
+                        start = appointment.Start,
+                        end = appointment.End,
+                    });
+                }
+
+                return list;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
         
         // GET api/<controller>/5

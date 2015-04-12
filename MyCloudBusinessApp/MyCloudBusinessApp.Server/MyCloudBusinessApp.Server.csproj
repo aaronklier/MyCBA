@@ -258,6 +258,9 @@
     <LightSwitchModel Include="DataSources\ApplicationData\Answers.lsml" />
     <LightSwitchModel Include="DataSources\ApplicationData\Comments.lsml" />
     <LightSwitchModel Include="DataSources\ApplicationData\Rooms.lsml" />
+    <LightSwitchModel Include="DataSources\ApplicationData\AnswersFilteredByUser.lsml">
+      <DependentUpon>Answers.lsml</DependentUpon>
+    </LightSwitchModel>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

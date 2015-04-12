@@ -41,35 +41,67 @@ myapp.ViewSurveyDetails.EndDate_postRender = function (element, contentItem) {
 myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, contentItem) {
     if (contentItem.screen.Survey.isActive == false) return;
     var filter = "(Answer_Question eq " + msls._toODataString(contentItem.data.Id, ":Int32") + ")";
-    myapp.activeDataWorkspace.ApplicationData.Answers.filter(filter).expand("Question").execute().then(function (results) {
-        $.each(results.results, function (key, item) {
-            if (item === null) {   //no response yet. create new answer with "No" as initial value and set the right backgroundcolor and icon.
-                var response = new myapp.Answer;
-                response.Person = "akl";
-                response.Response = 3;
-                response.setQuestion(contentItem.data.Id);
-                var object = new Object();
-                object.answer = response;
+    myapp.activeDataWorkspace.ApplicationData.AnswersFilteredByUser().filter(filter).expand("Question").execute().then(function (results) {
+        if (results.results.length < 1) { //array hat eine länge von 0 und ist daher leer == no response yet.
+            var response = new myapp.Answer;
+            //response.Person = "akl";
+            response.Response = 3;
+            response.setQuestion(contentItem.value);
 
-                var listItem = $(element).parent("li");
-                $(listItem).addClass("surveyText");
-                object.domElement = listItem;
-                array.push(object);
-                SetBackgroundcolor(object.answer, object.domElement);
-                SetConflictingEvents(contentItem, object.domElement);
-            }
-            else {  //already a response saved. set the right backgroundcolor and icon.
-                var object = new Object();
-                object.answer = item;
+            var object = new Object();
+            var listItem = $(element).parent("li");
+            $(listItem).addClass("surveyText");
 
-                var listItem = $(element).parent("li");
-                $(listItem).addClass("surveyText");
-                object.domElement = listItem;
-                array.push(object);
-                SetBackgroundcolor(object.answer, object.domElement);
-                SetConflictingEvents(contentItem, object.domElement);
-            }
-        });
+            object.answer = response;
+            object.domElement = listItem;
+            array.push(object);
+            SetBackgroundcolor(object.answer, object.domElement);
+            SetConflictingEvents(contentItem, object.domElement);
+        }
+        else { //es gibt bereits eine answer
+            var item = results.results[0];
+
+            var object = new Object();
+            object.answer = item;
+
+            var listItem = $(element).parent("li");
+            $(listItem).addClass("surveyText");
+            object.domElement = listItem;
+            array.push(object);
+            SetBackgroundcolor(object.answer, object.domElement);
+            SetConflictingEvents(contentItem, object.domElement);
+        }
+
+
+
+        //$.each(results.results, function (key, item) {
+        //    if (item === null) {   //no response yet. create new answer with "No" as initial value and set the right backgroundcolor and icon.
+        //        var response = new myapp.Answer;
+        //        //response.Person = "akl";
+        //        response.Response = 3;
+        //        response.setQuestion(contentItem.data.Id);
+        //        var object = new Object();
+        //        object.answer = response;
+
+        //        var listItem = $(element).parent("li");
+        //        $(listItem).addClass("surveyText");
+        //        object.domElement = listItem;
+        //        array.push(object);
+        //        SetBackgroundcolor(object.answer, object.domElement);
+        //        SetConflictingEvents(contentItem, object.domElement);
+        //    }
+        //    else {  //already a response saved. set the right backgroundcolor and icon.
+        //        var object = new Object();
+        //        object.answer = item;
+
+        //        var listItem = $(element).parent("li");
+        //        $(listItem).addClass("surveyText");
+        //        object.domElement = listItem;
+        //        array.push(object);
+        //        SetBackgroundcolor(object.answer, object.domElement);
+        //        SetConflictingEvents(contentItem, object.domElement);
+        //    }
+        //});
     },
         function (error) {
             alert(error);
@@ -214,7 +246,7 @@ function GetIconForResultTable(value) {
 myapp.ViewSurveyDetails.ResultTable_render = function (element, contentItem) {
 
     $(element).append('<table id="votingTable" class="msls-table ui-responsive table-stripe msls-hstretch ui-table ui-table-reflow"><thead></thead><tbody></tbody');
-    $.getJSON('/api/SurveyInfo/Get/' + contentItem.screen.Survey.Id, function (data) {
+    $.getJSON('/api/SurveyInfo/GetSurveyResults/' + contentItem.screen.Survey.Id, function (data) {
         $.each(data, function (key, row) {
             if (key == 0) {
                 $.each(row, function (key, value) {

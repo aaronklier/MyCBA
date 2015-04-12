@@ -9,7 +9,6 @@ myapp.ViewSurvey.Details_postRender = function (element, contentItem) {
   
 }
 
-
 myapp.ViewSurvey.AddQuestion_postRender = function (element, contentItem) {
     if (contentItem.screen.Survey.isMeetingSurvey) {
         $(element).css("display", "none");
