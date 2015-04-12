@@ -9,7 +9,9 @@ namespace LightSwitchApplication
 {
     public partial class ApplicationDataService
     {
-
-
+        partial void Comments_Inserting(Comment entity)
+        {
+                entity.Person = Application.Current.User.Email;
+        }
     }
 }

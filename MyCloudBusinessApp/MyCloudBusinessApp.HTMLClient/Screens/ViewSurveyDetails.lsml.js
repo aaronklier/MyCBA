@@ -44,7 +44,6 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
     myapp.activeDataWorkspace.ApplicationData.AnswersFilteredByUser().filter(filter).expand("Question").execute().then(function (results) {
         if (results.results.length < 1) { //array hat eine länge von 0 und ist daher leer == no response yet.
             var response = new myapp.Answer;
-            //response.Person = "akl";
             response.Response = 3;
             response.setQuestion(contentItem.value);
 
@@ -71,37 +70,6 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
             SetBackgroundcolor(object.answer, object.domElement);
             SetConflictingEvents(contentItem, object.domElement);
         }
-
-
-
-        //$.each(results.results, function (key, item) {
-        //    if (item === null) {   //no response yet. create new answer with "No" as initial value and set the right backgroundcolor and icon.
-        //        var response = new myapp.Answer;
-        //        //response.Person = "akl";
-        //        response.Response = 3;
-        //        response.setQuestion(contentItem.data.Id);
-        //        var object = new Object();
-        //        object.answer = response;
-
-        //        var listItem = $(element).parent("li");
-        //        $(listItem).addClass("surveyText");
-        //        object.domElement = listItem;
-        //        array.push(object);
-        //        SetBackgroundcolor(object.answer, object.domElement);
-        //        SetConflictingEvents(contentItem, object.domElement);
-        //    }
-        //    else {  //already a response saved. set the right backgroundcolor and icon.
-        //        var object = new Object();
-        //        object.answer = item;
-
-        //        var listItem = $(element).parent("li");
-        //        $(listItem).addClass("surveyText");
-        //        object.domElement = listItem;
-        //        array.push(object);
-        //        SetBackgroundcolor(object.answer, object.domElement);
-        //        SetConflictingEvents(contentItem, object.domElement);
-        //    }
-        //});
     },
         function (error) {
             alert(error);
@@ -109,9 +77,8 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
 };
 
 function SetConflictingEvents(contentItem, domElement) {
-
+    if (contentItem.screen.Survey.isMeetingSurvey == false) return;
     $.getJSON('/api/Calendar/GetConflicts/' + contentItem.data.Id, function (data) {
-        //alert(data[0].subject + " starts at: " + data[0].start);
         if (data[0] != null) {
             var alertHtml = GetAlertHtml(data[0]);
             $(domElement).append("<img class='alertIcon' src='Content/images/alert.png'>");
@@ -189,7 +156,6 @@ myapp.ViewSurveyDetails.SendMessage_execute = function (screen) {
     var newComment = new myapp.Comment;
     newComment.Message = text;
     newComment.setSurvey(screen.Survey);
-    newComment.Person = "TODO-NotMandatory";
     return myapp.activeDataWorkspace.ApplicationData.saveChanges().then(function () {
         $('#newMessage').val('');
         //screen.getComments();

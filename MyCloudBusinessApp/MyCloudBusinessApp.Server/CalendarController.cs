@@ -170,8 +170,9 @@ namespace LightSwitchApplication
 
             var start = question.StartDate;  //new DateTime(2015, 4, 9, 16, 50, 00);
             var end = question.EndDate;  //new DateTime(2015, 4, 9, 17, 30, 00);
-            var calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
+            if (start == null || end == null) return null;
 
+            var calendar = CalendarFolder.Bind(service, WellKnownFolderName.Calendar, new PropertySet());
             // Set the start and end time and number of appointments to retrieve.
             var view = new CalendarView(start.Value, end.Value, 3); //new CalendarView(start, end, 10); 
 
