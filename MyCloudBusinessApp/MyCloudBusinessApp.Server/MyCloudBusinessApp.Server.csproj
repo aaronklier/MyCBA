@@ -226,6 +226,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalendarController.cs" />
+    <Compile Include="DataSources\ApplicationData\Question.lsml.cs">
+      <DependentUpon>Questions.lsml</DependentUpon>
+    </Compile>
     <Compile Include="DataSources\ApplicationData\_ApplicationDataService.lsml.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -5,21 +5,103 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Exchange.WebServices.Data;
+using System.Text;
+using System.Net.Mime;
+using System.IO;
 
 namespace LightSwitchApplication
 {
     public class CalendarController : ApiController
     {
-
-        // GET api/<controller>
-        public string Get()
+        // GET api/<controller>/5
+        public string GetClosePollAndSendMail(int id)
         {
-            return "Not implemented";
+            Question question;
+            Survey survey;
+            Microsoft.LightSwitch.Framework.Server.O365PersonInfo currentSPuser;
+            var surveyParticipants = new List<String>();
+            using (ServerApplicationContext context = ServerApplicationContext.CreateContext())
+            {
+                question = context.DataWorkspace.ApplicationData.Questions_SingleOrDefault(id);
+                survey = context.DataWorkspace.ApplicationData.Surveys_SingleOrDefault(question.Survey.Id);
+                survey.isActive = false;
+                context.DataWorkspace.ApplicationData.SaveChanges();
+                currentSPuser = context.Application.User;
+                var allAnswers = context.DataWorkspace.ApplicationData.Answers.GetQuery().Execute().Where(a => a.Question.Survey.Id == survey.Id); //Where(a => a.Question.Survey.Id == survey.Id).Select(a => a.PersonInfo.Email);
+                foreach (var person in allAnswers.Select(a => a.CreatedBy).Distinct())
+                {
+                    //if CreatedBy == eine Email !
+                    surveyParticipants.Add(person);
+                }
+            }
+
+            if(!survey.isMeetingSurvey) return "Sucessfully closed poll and informed participants per Email!";
+            
+            //CREATE iCALENDAR EMAIL
+                try
+                {
+                    ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
+                    service.Credentials = new WebCredentials("Aaron@akldev.onmicrosoft.com", "Wienerfeld27");
+                    service.AutodiscoverUrl(currentSPuser.PersonId, RedirectionUrlValidationCallback);
+
+                    //### EMAIL senden ###
+                    EmailMessage mail = new EmailMessage(service);
+                    mail.ToRecipients.AddRange(surveyParticipants);
+                    mail.Subject = "Survey closed: " + survey.SurveyName;
+                    mail.Body = new MessageBody("Hi,\n\nthis is an auto-generated Email.\nThe survey '" + survey.SurveyName + "' is closed and the final option is chosen.\nPlease find enclosed the attached iCalendar file.");
+
+                    var str = GetiCalendarString(question, survey, mail);
+                    string memString = str;
+                    // convert string to stream
+                    byte[] buffer = Encoding.ASCII.GetBytes(memString);
+                    MemoryStream ms = new MemoryStream(buffer);
+                    mail.Attachments.AddFileAttachment("Event.ics", ms);                  
+
+                    mail.Send();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+           return "Successfully closed poll and send iCalendar files to the participants!";
+            
         }
 
+        private static String GetiCalendarString(Question question, Survey survey, EmailMessage mail)
+        {
+            // Now Contruct the ICS file using string builder
+            StringBuilder str = new StringBuilder();
+            str.AppendLine("BEGIN:VCALENDAR");
+            str.AppendLine("PRODID:-//Schedule a Meeting");
+            str.AppendLine("VERSION:2.0");
+            str.AppendLine("METHOD:REQUEST");
+            str.AppendLine("BEGIN:VEVENT");
+            str.AppendLine(string.Format("DTSTART:{0:yyyyMMddTHHmmss}", question.StartDate));
+            str.AppendLine(string.Format("DTSTAMP:{0:yyyyMMddTHHmmss}", DateTime.UtcNow));
+            str.AppendLine(string.Format("DTEND:{0:yyyyMMddTHHmmss}", question.EndDate));
+            str.AppendLine("LOCATION: " + survey.GeoLocationName);
+            str.AppendLine(string.Format("UID:{0}", Guid.NewGuid()));
+            str.AppendLine(string.Format("DESCRIPTION:{0}", survey.Description));
+            str.AppendLine(string.Format("X-ALT-DESC;FMTTYPE=text/html:{0}", mail.Body));
+            str.AppendLine(string.Format("SUMMARY:{0}", survey.SurveyName));
+            str.AppendLine(string.Format("ORGANIZER:MAILTO:{0}", survey.CreatedBy));
+
+            str.AppendLine(string.Format("ATTENDEE;CN=\"{0}\";RSVP=TRUE:mailto:{1}", mail.ToRecipients.First().Name, mail.ToRecipients.First().Address));
+
+            str.AppendLine("BEGIN:VALARM");
+            str.AppendLine("TRIGGER:-PT15M");
+            str.AppendLine("ACTION:DISPLAY");
+            str.AppendLine("DESCRIPTION:Reminder");
+            str.AppendLine("END:VALARM");
+            str.AppendLine("END:VEVENT");
+            str.AppendLine("END:VCALENDAR");
+
+            return str.ToString();
+        }
 
         // GET api/<controller>/5
-        public List<Object> Get(int id)
+        public List<Object> GetConflicts(int id)
         {
 
             Microsoft.LightSwitch.Framework.Server.O365PersonInfo currentSPuser;
@@ -61,38 +143,6 @@ namespace LightSwitchApplication
 
             return list;
         }
-
-
-
-
-        //### EMAIL senden:
-        //EmailMessage mail = new EmailMessage(service);
-        //mail.ToRecipients.Add("Aaron@akldev.onmicrosoft.com");
-        //mail.Subject = "Email per EWS";
-        //mail.Body = new MessageBody("this is the body of the mail..");
-        //mail.Send();
-
-
-        //// GET api/<controller>/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/<controller>
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        //// PUT api/<controller>/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //public void Delete(int id)
-        //{
-        //}
 
         private static bool RedirectionUrlValidationCallback(string redirectionUrl)
         {

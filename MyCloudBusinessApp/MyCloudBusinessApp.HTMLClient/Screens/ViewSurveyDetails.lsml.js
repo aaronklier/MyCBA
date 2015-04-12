@@ -17,6 +17,10 @@ myapp.ViewSurveyDetails.created = function (screen) {
 // ##### VOTING #####//
 
 myapp.ViewSurveyDetails.Questions_ItemTap_execute = function (screen) {
+    if (screen.Survey.isActive == false) {
+        alert("Survey is no longer active!");
+        return;
+    }
     var id = screen.Questions.selectedItem.Id;
     var answer = $.grep(array, function (item) {
         return item.answer.Question.Id == id;
@@ -35,6 +39,7 @@ myapp.ViewSurveyDetails.EndDate_postRender = function (element, contentItem) {
 };
 
 myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, contentItem) {
+    if (contentItem.screen.Survey.isActive == false) return;
     var filter = "(Answer_Question eq " + msls._toODataString(contentItem.data.Id, ":Int32") + ")";
     myapp.activeDataWorkspace.ApplicationData.Answers.filter(filter).expand("Question").execute().then(function (results) {
         $.each(results.results, function (key, item) {
@@ -73,7 +78,7 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
 
 function SetConflictingEvents(contentItem, domElement) {
 
-    $.getJSON('/api/Calendar/Get/' + contentItem.data.Id, function (data) {
+    $.getJSON('/api/Calendar/GetConflicts/' + contentItem.data.Id, function (data) {
         var x = data;
         //alert(data[0].subject + " starts at: " + data[0].start);
         if (data[0] != null) {

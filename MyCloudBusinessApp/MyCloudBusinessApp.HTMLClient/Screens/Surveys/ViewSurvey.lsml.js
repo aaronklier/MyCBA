@@ -209,7 +209,6 @@ myapp.ViewSurvey.QuestionsTemplate_postRender = function (element, contentItem) 
     });
 };
 
-
 var weekday = new Array(7);
 weekday[0] = "Sonntag";
 weekday[1] = "Montag";
