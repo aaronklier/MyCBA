@@ -230,3 +230,50 @@ myapp.ViewSurveyDetails.ResultTable_render = function (element, contentItem) {
     });
     $(element).append('</table>');
 };
+
+
+
+
+
+
+// #################### //
+// ##### TAB 2 CHARTS #####//
+
+myapp.ViewSurveyDetails.Chart_render = function (element, contentItem) {
+    //first clear all appended elements, so they're not created on every _render call !
+    //$("#chart svg").remove();
+    $("#canvas").remove();
+    $(element).append("<div id='chart' style='width: 900px; height: 350px;'></div>");
+
+    $.getJSON('/api/SurveyInfo/GetSurveyResultForChart/' + contentItem.screen.Survey.Id, function (myData) {
+        drawChart(myData);
+    });
+
+
+};
+
+function drawChart(myData) {
+    var data = google.visualization.arrayToDataTable(myData);
+
+    var options = {
+        width: 900,
+        height: 350,
+        chart: {
+            title: 'Responses',
+            subtitle: ''
+        },
+        colors: ['#A3F4D2', '#F2C283', '#FF7585'],
+        bars: 'horizontal',
+        groupWidth: 5,
+        bar: { groupWidth: '5%' }
+        //,
+        //axes: {
+        //    y: {
+        //        distance: { label: 'Number' }
+        //    }
+        //}
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('chart'));
+    chart.draw(data, options);
+}

@@ -45,9 +45,8 @@
       </EntityProperty>
       <EntityProperty
         Name="Person"
-        PropertyType=":Person">
+        PropertyType=":Person?">
         <EntityProperty.Attributes>
-          <Required />
           <MaxLength
             Value="255" />
           <NotSearchable />

@@ -6,6 +6,10 @@
   </Application.Attributes>
   <Screen
     Name="Startseite">
+    <Screen.Attributes>
+      <DisplayName
+        Value="Home" />
+    </Screen.Attributes>
     <Screen.RootContentItem>
       <ContentItem
         Name="RootContentItem"
@@ -21,10 +25,18 @@
             <ContentItem
               Name="ScreenContent"
               Kind="ScreenContent">
-              <ContentItem.Attributes>
-                <DisplayName
-                  Value="Home" />
-              </ContentItem.Attributes>
+              <ContentItem.PropertySources>
+                <ControlPropertySource
+                  Property="Microsoft.LightSwitch.MobileWeb:RootControl/Properties[AttachedLabelPosition]">
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <ConstantExpression
+                        Value="Hidden"
+                        ResultType=":String" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ControlPropertySource>
+              </ContentItem.PropertySources>
             </ContentItem>
           </ContentItem>
           <ContentItem.PropertySources>

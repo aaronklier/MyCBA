@@ -92,7 +92,7 @@ namespace LightSwitchApplication
                     ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
                     service.Credentials = new WebCredentials(WebCredentialsUsername, WebCredentialsPassword);
                     service.AutodiscoverUrl(currentSPuser.PersonId, RedirectionUrlValidationCallback);
-
+                    if (!currentSPuser.Email.Contains("akldev")) return null;
                     //### EMAIL senden ###
                     EmailMessage mail = new EmailMessage(service);
                     mail.ToRecipients.AddRange(surveyParticipants);
@@ -158,7 +158,6 @@ namespace LightSwitchApplication
             using (ServerApplicationContext ctx = ServerApplicationContext.CreateContext())
             {
                 currentSPuser = ctx.Application.User;
-
                 //if user is external user  || null : return;
 
                 question = ctx.DataWorkspace.ApplicationData.Questions_SingleOrDefault(id);

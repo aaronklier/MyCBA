@@ -79,7 +79,7 @@
                 <ContentItem
                   Name="Person"
                   Kind="Value"
-                  DataType=":Person">
+                  DataType=":Person?">
                   <ContentItem.DataSource>
                     <ScreenExpressionTree>
                       <ChainExpression>
@@ -88,6 +88,18 @@
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
+                  <ContentItem.PropertySources>
+                    <ControlPropertySource
+                      Property="Microsoft.LightSwitch.SharePoint.MobileWeb:PersonPicker/Properties[ChoiceDisplayMode]">
+                      <ScreenExpressionTree>
+                        <ChainExpression>
+                          <ConstantExpression
+                            Value="NameWithPictureAndTitle"
+                            ResultType=":String" />
+                        </ChainExpression>
+                      </ScreenExpressionTree>
+                    </ControlPropertySource>
+                  </ContentItem.PropertySources>
                 </ContentItem>
                 <ContentItem
                   Name="AllowMaybe"
@@ -111,19 +123,6 @@
                       <ChainExpression>
                         <MemberExpression
                           Member="Survey/Properties[isActive]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem
-                  Name="isMeetingSurvey"
-                  Kind="Value"
-                  DataType=":Boolean">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression
-                          Member="Survey/Properties[isMeetingSurvey]" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
@@ -171,6 +170,10 @@
                   Name="GeoLocationName"
                   Kind="Value"
                   DataType=":String?">
+                  <ContentItem.Attributes>
+                    <DisplayName
+                      Value="Location" />
+                  </ContentItem.Attributes>
                   <ContentItem.DataSource>
                     <ScreenExpressionTree>
                       <ChainExpression>
@@ -182,6 +185,7 @@
                 </ContentItem>
                 <ContentItem
                   Name="GeoLat"
+                  IsHidden="True"
                   Kind="Value"
                   DataType=":Double?">
                   <ContentItem.DataSource>
@@ -195,6 +199,7 @@
                 </ContentItem>
                 <ContentItem
                   Name="GeoLong"
+                  IsHidden="True"
                   Kind="Value"
                   DataType=":Double?">
                   <ContentItem.DataSource>
@@ -228,6 +233,19 @@
                       </ScreenExpressionTree>
                     </ContentItem.DataSource>
                   </ContentItem>
+                </ContentItem>
+                <ContentItem
+                  Name="isMeetingSurvey"
+                  Kind="Value"
+                  DataType=":Boolean">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression
+                          Member="Survey/Properties[isMeetingSurvey]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
                 </ContentItem>
                 <ContentItem.PropertySources>
                   <ControlPropertySource

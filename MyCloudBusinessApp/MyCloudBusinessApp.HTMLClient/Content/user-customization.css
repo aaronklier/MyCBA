@@ -37,15 +37,20 @@ screen and (max-width: 400px) and (orientation: portrait),
 screen and (max-width: 640px) and (max-height: 400px) and (orientation: landscape) {
 }
 
-.myOwnOpacity{
-    /*opacity: 0.8;*/
-}
 .groupHeader{
     color: black !important;
     font-size: 20px;
-
 }
-
+.groupHeader img{
+    position: absolute;
+    top: 24px;
+    width:35px;
+    left: 156px;
+    
+}
+td[style^="background:null"]{
+    word-wrap:    break-word;
+}
 
 /* ################################# */
 /* ### VOTING SCREEN ### */

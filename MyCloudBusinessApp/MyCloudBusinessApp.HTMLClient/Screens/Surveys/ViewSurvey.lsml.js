@@ -21,6 +21,7 @@ myapp.ViewSurvey.ScreenContent_render = function (element, contentItem) {
     //$(element).empty();
     //contentItem.handleViewDispose(function () {
     //});
+    $("#calendar").remove();
     if (!contentItem.screen.Survey.isMeetingSurvey) return;
 
     $(element).append("<div id='calendar'></div>");
