@@ -94,6 +94,10 @@
                     Name="GeoLocationName"
                     Kind="Value"
                     DataType=":String?">
+                    <ContentItem.Attributes>
+                      <DisplayName
+                        Value="Location" />
+                    </ContentItem.Attributes>
                     <ContentItem.DataSource>
                       <ScreenExpressionTree>
                         <ChainExpression>

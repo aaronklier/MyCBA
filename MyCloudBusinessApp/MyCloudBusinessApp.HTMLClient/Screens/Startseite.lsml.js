@@ -102,7 +102,7 @@ function LoadComments() {
                                                         "<p style='color: white !important;'><u>" + comment.CreatedBy + "</u> wrote:</br><span style='font-size: 12px;'>" + comment.Message + "</span></p>" +
                                                     "</div>" +
                                                    " <div class='brand bg-darker'>" +
-                                                        "<span class='label fg-white'>" + comment.Created.toUTCString() + "</span><span style='float:right;font-size:10px;'>"+comment.Survey.SurveyName+"</span>" +
+                                                        "<span class='label fg-white'>" + comment.Created.toUTCString() + "</span><span style='float:right;font-size:10px;color:orange;'>Survey: " + comment.Survey.SurveyName + "</span>" +
                                                     "</div>" +
                                                 "</div>"); 
             }

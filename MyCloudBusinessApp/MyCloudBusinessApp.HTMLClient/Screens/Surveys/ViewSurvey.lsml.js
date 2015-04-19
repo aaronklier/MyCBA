@@ -82,6 +82,7 @@ myapp.ViewSurvey.ScreenContent_render = function (element, contentItem) {
                     save: function () {
                         calEvent.id = id;
                         id++;
+                        calEvent.title = contentItem.screen.Survey.SurveyName;
                         calEvent.start = new Date(startField.val());
                         calEvent.end = new Date(endField.val());
                         
@@ -91,8 +92,8 @@ myapp.ViewSurvey.ScreenContent_render = function (element, contentItem) {
                         $calendar.weekCalendar("removeUnsavedEvents");
                         $calendar.weekCalendar("updateEvent", calEvent);
                         $dialogContent.dialog("close");
-                        $(".wc-title:contains('New Event')").parent(".wc-cal-event").children("div.wc-time").addClass("NewCalEventHeader");
-                        $(".wc-title:contains('New Event')").parent(".wc-cal-event").addClass("NewCalEventBody");
+                        $(".wc-title:contains('" + calEvent.title + "')").parent(".wc-cal-event").children("div.wc-time").addClass("NewCalEventHeader");
+                        $(".wc-title:contains('" + calEvent.title + "')").parent(".wc-cal-event").addClass("NewCalEventBody");
                     },
                     cancel: function () {
                         $dialogContent.dialog("close");
