@@ -76,7 +76,7 @@ namespace LightSwitchApplication
                 survey.isActive = false;
                 context.DataWorkspace.ApplicationData.SaveChanges();
                 currentSPuser = context.Application.User;
-                var allAnswers = context.DataWorkspace.ApplicationData.Answers.GetQuery().Execute().Where(a => a.Question.Survey.Id == survey.Id); //Where(a => a.Question.Survey.Id == survey.Id).Select(a => a.PersonInfo.Email);
+                var allAnswers = context.DataWorkspace.ApplicationData.Answers.GetQuery().Execute().Where(a => a.Question.Survey.Id == survey.Id);
                 foreach (var person in allAnswers.Select(a => a.CreatedBy).Distinct())
                 {
                     //if CreatedBy == eine Email !

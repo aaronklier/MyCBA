@@ -2,18 +2,7 @@
 
 myapp.Startseite.ScreenContent_render = function (element, contentItem) {
     $(element).addClass("metro");
-    //var area = $(element).append("<div class='tile-area tile-area-dark' style='width: 1774px;'>");
-
-            //$(titleArea).append("<div class='user-id'>" +
-            //"<div class='user-id-image'>" +
-            //"<span class='icon-user no-display1'></span>" +
-            //"<img class='no-display' src='images/Battlefield_4_Icon.png'>" +
-            //"</div>" +
-            //"<div class='user-id-name'>" +
-            //"<span class='first-name'>Sergey</span>" +
-            //"<span class='last-name'>Pimenov</span>" +
-            //"</div>" +
-    //"</div>");
+    //$(element).append("<div class='tile-area tile-area-dark' style='height:650px'>");
 
     var group = "<div class='tile-group triple firstTileGroup'><span class='groupHeader'>Create & Explore<span></div>";
     $(element).append(group);

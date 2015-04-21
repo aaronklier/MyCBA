@@ -6,7 +6,7 @@ var orange = "#F2C283";
 var green = "#A3F4D2";
 
 myapp.ViewSurveyDetails.created = function (screen) {
-    var details = screen.findContentItem("Details")
+    var details = screen.findContentItem("Details");
     details.handleViewDispose(function () {
         array = [];
     });
@@ -54,7 +54,7 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
             object.answer = response;
             object.domElement = listItem;
             array.push(object);
-            SetBackgroundcolor(object.answer, object.domElement);
+            SetBackgroundColorAndIcon(object.answer, object.domElement);
             SetConflictingEvents(contentItem, object.domElement);
         }
         else { //es gibt bereits eine answer
@@ -67,7 +67,7 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
             $(listItem).addClass("surveyText");
             object.domElement = listItem;
             array.push(object);
-            SetBackgroundcolor(object.answer, object.domElement);
+            SetBackgroundColorAndIcon(object.answer, object.domElement);
             SetConflictingEvents(contentItem, object.domElement);
         }
     },
@@ -77,10 +77,9 @@ myapp.ViewSurveyDetails.QuestionsTemplate_postRender = function (element, conten
 };
 
 function SetConflictingEvents(contentItem, domElement) {
-    if (contentItem.screen.Survey.isMeetingSurvey == false) return;
+    if (contentItem.screen.Survey.isMeetingSurvey === false) return;
     $.getJSON('/api/Calendar/GetConflicts/' + contentItem.data.Id, function (data) {
         if (data[0] != null) {
-            var alertHtml = GetAlertHtml(data[0]);
             $(domElement).append("<img class='alertIcon' src='Content/images/alert.png'>");
             $(domElement).attr("tooltip", "Konflikt mit Termin Subject: " + data[0].subject + " Start: " + data[0].start + " End: " + data[0].end + " Organizer: " + data[0].organizer + " Location: " + data[0].location);
         }
@@ -96,13 +95,13 @@ function GetIconHtml(answer) {
         default: return answer.Response;
     }
 }
-function DoIt(answer, domElement, color) {
+function DoIt(answer, domElement, color) { //Set backgroundcolor and icon
     $(domElement).css("background", color);
     $(domElement).find(".votingIcon").remove();
     var iconToAdd = GetIconHtml(answer); //$(GetIconHtml(answer));
     $(domElement).append(iconToAdd);
 }
-function SetBackgroundcolor(answer, domElement) {
+function SetBackgroundColorAndIcon(answer, domElement) {   //selbe wie DoIt nur muss keine farbe mitgegeben werden
     switch (answer.Response) {
         case 1: //Yes
             DoIt(answer, domElement, green);
@@ -120,20 +119,20 @@ function SetAnswerAndBackgroundcolor(answer, domElement) {
         case 1: //Yes
             if (answer.Question.Survey.AllowMaybe == false) {
                 answer.Response = 3;
-                DoIt(answer, domElement, red); //wird No
+                SetBackgroundColorAndIcon(answer, domElement); //wird No
             }
             else {
                 answer.Response = 2;
-                DoIt(answer, domElement, orange); //wird Maybe
+                SetBackgroundColorAndIcon(answer, domElement); //wird Maybe
             }
             break;
         case 2: //Maybe
             answer.Response = 3;
-            SetBackgroundcolor(answer, domElement, red); //wird No
+            SetBackgroundColorAndIcon(answer, domElement); //wird No
             break;
         case 3: //No
             answer.Response = 1;
-            SetBackgroundcolor(answer, domElement, green); //wird Yes
+            SetBackgroundColorAndIcon(answer, domElement); //wird Yes
             break;
     }
 }
@@ -277,3 +276,4 @@ function drawChart(myData) {
     var chart = new google.charts.Bar(document.getElementById('chart'));
     chart.draw(data, options);
 }
+

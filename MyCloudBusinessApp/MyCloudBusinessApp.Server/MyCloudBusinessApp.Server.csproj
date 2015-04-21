@@ -226,9 +226,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalendarController.cs" />
-    <Compile Include="DataSources\ApplicationData\Question.lsml.cs">
-      <DependentUpon>Questions.lsml</DependentUpon>
-    </Compile>
     <Compile Include="DataSources\ApplicationData\_ApplicationDataService.lsml.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -266,6 +263,12 @@
     </LightSwitchModel>
     <LightSwitchModel Include="DataSources\ApplicationData\CommentsSortedByCreated.lsml">
       <DependentUpon>Comments.lsml</DependentUpon>
+    </LightSwitchModel>
+    <LightSwitchModel Include="DataSources\ApplicationData\QuestionsFilteredByUser.lsml">
+      <DependentUpon>Questions.lsml</DependentUpon>
+    </LightSwitchModel>
+    <LightSwitchModel Include="DataSources\ApplicationData\SurveysFilteredByUser.lsml">
+      <DependentUpon>Surveys.lsml</DependentUpon>
     </LightSwitchModel>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

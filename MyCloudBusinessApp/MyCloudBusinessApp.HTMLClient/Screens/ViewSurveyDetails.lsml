@@ -526,8 +526,6 @@
       <ScreenMethod
         Name="Questions_ItemTap" />
       <ScreenMethod
-        Name="SaveComment" />
-      <ScreenMethod
         Name="SendMessage" />
     </Screen.Methods>
     <Screen.Properties>
@@ -538,36 +536,6 @@
           <IsParameter />
         </ScreenProperty.Attributes>
       </ScreenProperty>
-      <ScreenCollectionProperty
-        Name="Questions"
-        PageSize="45"
-        PropertyType="CollectionView$Question">
-        <ScreenCollectionProperty.Query>
-          <ScreenQueryDefinition
-            Name="QuestionsQuery"
-            ReturnType="Question*">
-            <ScreenQueryDefinition.FilterExpression>
-              <QueryFilterExpressionTree />
-            </ScreenQueryDefinition.FilterExpression>
-            <ScreenQueryDefinition.Source>
-              <QuerySourceExpressionTree>
-                <ChainExpression>
-                  <MemberExpression
-                    Member="ViewSurveyDetails/Properties[Survey]" />
-                  <MemberExpression
-                    Member="Questions" />
-                </ChainExpression>
-              </QuerySourceExpressionTree>
-            </ScreenQueryDefinition.Source>
-          </ScreenQueryDefinition>
-        </ScreenCollectionProperty.Query>
-        <ScreenExpressionTree>
-          <ChainExpression>
-            <CallExpression
-              Target="ViewSurveyDetails/Properties[Questions]/Query" />
-          </ChainExpression>
-        </ScreenExpressionTree>
-      </ScreenCollectionProperty>
       <ScreenCollectionProperty
         Name="Comments"
         PageSize="45"
@@ -604,6 +572,36 @@
           <ChainExpression>
             <CallExpression
               Target="ViewSurveyDetails/Properties[Comments]/Query" />
+          </ChainExpression>
+        </ScreenExpressionTree>
+      </ScreenCollectionProperty>
+      <ScreenCollectionProperty
+        Name="Questions"
+        PageSize="45"
+        PropertyType="CollectionView$Question">
+        <ScreenCollectionProperty.Query>
+          <ScreenQueryDefinition
+            Name="QuestionsQuery"
+            ReturnType="Question*">
+            <ScreenQueryDefinition.FilterExpression>
+              <QueryFilterExpressionTree />
+            </ScreenQueryDefinition.FilterExpression>
+            <ScreenQueryDefinition.Source>
+              <QuerySourceExpressionTree>
+                <ChainExpression>
+                  <MemberExpression
+                    Member="ViewSurveyDetails/Properties[Survey]" />
+                  <MemberExpression
+                    Member="Questions" />
+                </ChainExpression>
+              </QuerySourceExpressionTree>
+            </ScreenQueryDefinition.Source>
+          </ScreenQueryDefinition>
+        </ScreenCollectionProperty.Query>
+        <ScreenExpressionTree>
+          <ChainExpression>
+            <CallExpression
+              Target="ViewSurveyDetails/Properties[Questions]/Query" />
           </ChainExpression>
         </ScreenExpressionTree>
       </ScreenCollectionProperty>
